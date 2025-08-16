@@ -12,6 +12,7 @@ A Python project optimized for merging millions of Parquet files into a single l
 - **Progress Tracking**: Real-time progress bars and detailed logging
 - **Preserves Original Files**: Creates a new merged file without deleting source files
 - **Optimized for Ryzen 7950X3D**: Configured to use all 32 threads efficiently
+- **NEW: Chunked Output**: Merge parquet files into multiple output files of specified size (e.g., 1.6GB chunks)
 
 ## Installation
 
@@ -24,7 +25,43 @@ pip install -r requirements.txt
 
 ## Quick Start
 
-### Method 1: Simple Script (Recommended)
+### Method 1: Chunked Merger - Multiple Output Files (NEW)
+
+If you want to merge your parquet files into multiple output files of approximately 1.6GB each (or any size you specify), use the chunked merger:
+
+Edit `merge_parquet_chunked_simple.py` and modify these variables:
+
+```python
+INPUT_DIR = "/path/to/your/parquet/files"
+OUTPUT_DIR = "/path/to/output/directory"
+OUTPUT_PREFIX = "merged_chunk"  # Files will be named: merged_chunk_0000.parquet, etc.
+TARGET_SIZE_GB = 1.6  # Target size for each output file in GB
+MEMORY_EFFICIENT = False  # Set to True for very large datasets
+```
+
+Then run:
+
+```bash
+python merge_parquet_chunked_simple.py
+```
+
+Or use the command line directly:
+
+```bash
+python parquet_merger_chunked.py /input/directory /output/directory \
+    --prefix merged_chunk \
+    --size 1.6 \
+    --workers 32 \
+    --memory-efficient  # Optional: for very large datasets
+```
+
+This will create multiple parquet files, each approximately 1.6GB in size:
+- `merged_chunk_0000.parquet`
+- `merged_chunk_0001.parquet`
+- `merged_chunk_0002.parquet`
+- etc.
+
+### Method 2: Simple Script - Single Output File
 
 Edit `merge_parquet_simple.py` and modify these variables:
 
@@ -41,7 +78,7 @@ Then run:
 python merge_parquet_simple.py
 ```
 
-### Method 2: Command Line - Multiprocessing Version
+### Method 3: Command Line - Multiprocessing Version
 
 ```bash
 python parquet_merger.py /input/directory /output/directory \
@@ -51,7 +88,7 @@ python parquet_merger.py /input/directory /output/directory \
     --chunk-size 100
 ```
 
-### Method 3: Command Line - Dask Version (Recommended for millions of files)
+### Method 4: Command Line - Dask Version (Recommended for millions of files)
 
 ```bash
 python parquet_merger_dask.py /input/directory /output/directory \
