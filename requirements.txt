@@ -1,0 +1,15 @@
+# Core dependencies for Parquet processing
+pyarrow>=14.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Parallel processing and distributed computing
+dask[complete]>=2023.12.0
+dask[distributed]>=2023.12.0
+
+# Progress bars and utilities
+tqdm>=4.65.0
+
+# Optional: For even better performance
+fastparquet>=2023.10.0
+numba>=0.58.0
